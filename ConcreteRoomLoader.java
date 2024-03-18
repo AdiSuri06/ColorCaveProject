@@ -1,10 +1,12 @@
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 public class ConcreteRoomLoader extends AbstractRoomLoader {
-    private Room start, end;
+    private Room start;
 
     @Override
     public void load() {
-        // Load room data
-        // Example:
         start = new Room("Start Room", "This is the starting room");
         Room room1 = new Room("Room 1", "Description 1");
         Room room2 = new Room("Room 2", "Description 2");
@@ -19,8 +21,20 @@ public class ConcreteRoomLoader extends AbstractRoomLoader {
         return start;
     }
 
+    // Serialize your cave's data
+    public void serializeCave(String fileName) {
+        try (FileOutputStream fileOut = new FileOutputStream(fileName);
+             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
+            objectOut.writeObject(this);
+            System.out.println("Cave data serialized successfully to " + fileName);
+        } catch (IOException e) {
+            System.out.println("Error occurred during serialization: " + e.getMessage());
+        }
+    }
+
     @Override
     public Room getEnd() {
-        return end;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getEnd'");
     }
 }
