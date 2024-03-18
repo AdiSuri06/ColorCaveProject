@@ -19,6 +19,8 @@ public class ColorCaveStarter extends JPanel implements MouseListener
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		loader = new ConcreteRoomLoader(); //need to extend abstract with concrete class
+		loader.load(); // Load your cave data
+		loader.serializeCave("");//caveData.ser filename 
 
 	}
 	public void paintComponent(Graphics g)

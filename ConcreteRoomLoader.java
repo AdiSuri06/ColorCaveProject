@@ -21,7 +21,6 @@ public class ConcreteRoomLoader extends AbstractRoomLoader {
         return start;
     }
 
-    // Serialize your cave's data
     public void serializeCave(String fileName) {
         try (FileOutputStream fileOut = new FileOutputStream(fileName);
              ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
