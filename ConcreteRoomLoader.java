@@ -1,4 +1,3 @@
-package Test;
 public class ConcreteRoomLoader extends AbstractRoomLoader{
     
     public Room start, end;
