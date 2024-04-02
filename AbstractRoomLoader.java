@@ -19,7 +19,7 @@ public abstract class AbstractRoomLoader implements Serializable {
 
 				// Method for serialization of object
 				out.writeObject(this);
-
+				
 				out.close();
 				file.close();
 
@@ -47,7 +47,7 @@ public AbstractRoomLoader deserialize(String fileName){
 
 				in.close();
 				file.close();
-
+				CaveData cave = (CaveData)(in.readObject());
 				System.out.println("Object has been deserialized  from file "+fileName);
 				System.out.println("Start = "+rL.getStart()+", end = "+rL.getEnd());
 		}
