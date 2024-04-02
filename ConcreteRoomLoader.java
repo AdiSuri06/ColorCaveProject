@@ -1,5 +1,5 @@
 public class ConcreteRoomLoader extends AbstractRoomLoader{
-    
+        CaveData cave = new CaveData();
     public Room start, end;
    public void load()
    {
