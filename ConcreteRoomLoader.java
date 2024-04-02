@@ -1,39 +1,55 @@
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-
-public class ConcreteRoomLoader extends AbstractRoomLoader {
-    private Room start;
-
-    @Override
-    public void load() {
-        start = new Room("Start Room", "This is the starting room");
-        Room room1 = new Room("Room 1", "Description 1");
-        Room room2 = new Room("Room 2", "Description 2");
-
-        // Define doors between rooms
-        start.addDoor(Door.RED, room1);
-        start.addDoor(Door.BLUE, room2);
-    }
-
-    @Override
-    public Room getStart() {
-        return start;
-    }
-
-    public void serializeCave(String fileName) {
-        try (FileOutputStream fileOut = new FileOutputStream(fileName);
-             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
-            objectOut.writeObject(this);
-            System.out.println("Cave data serialized successfully to " + fileName);
-        } catch (IOException e) {
-            System.out.println("Error occurred during serialization: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public Room getEnd() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getEnd'");
-    }
+package Test;
+public class ConcreteRoomLoader extends AbstractRoomLoader{
+    
+    public Room start, end;
+   public void load()
+   {
+   start = new Room("start", "first");
+   Room r1 = new Room("one", "level one");
+   Room  r2 = new Room("two", "level two");
+   Room r3 = new Room("three", "level two");
+   Room r4 = new Room("four", "level three");
+   Room r5 = new Room("five", "level three");
+   Room r6 = new Room("six", "test");
+   Room r7= new Room("seven", "test");
+   Room r8 = new Room("eight", "test");
+   
+   
+   start.addDoor(Door.RED,  r1); 
+   r1.addDoor(Door.BLUE, r2);
+   r1.addDoor(Door.RED, r3);
+   r2.addDoor(Door.GREEN, r1);
+   r2.addDoor(Door.YELLOW, r4);
+   r2.addDoor(Door.BLUE, r5);
+   r5.addDoor(Door.GREEN, r6);
+   r3.addDoor(Door.RED, r7);
+   r3.addDoor(Door.BLUE, r8);
+   
+   cave.addRoom(r1);
+   cave.addRoom(r2);
+   cave.addRoom(r3);
+   cave.addRoom(r4);
+   cave.addRoom(r5);
+   cave.addRoom(r6);
+   cave.addRoom(r7);
+   cave.addRoom(r8);
+   serialize("adi.ser");
+   
+   }
+@Override
+public Room getStart() {
+	// TODO Auto-generated method stub
+	return null;
+}
+@Override
+public Room getEnd() {
+	// TODO Auto-generated method stub
+	return null;
+    
+}
+   
+public static void main(String[] args)
+{
+   
+}
 }
