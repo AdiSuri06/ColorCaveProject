@@ -7,7 +7,7 @@ public class ColorCaveStarter extends JPanel implements MouseListener
 	Rectangle r;
 	Room room, end;
 	JFrame frame;
-	ConcreteRoomLoader loader;
+	ConcreteRoomLoader loader; 
 
 	public ColorCaveStarter()
 	{
