@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.*;
 public class ColorCaveStarter extends JPanel implements MouseListener
 {
@@ -8,6 +11,9 @@ public class ColorCaveStarter extends JPanel implements MouseListener
 	Room room, end;
 	JFrame frame;
 	ConcreteRoomLoader loader; 
+	private AbstractRoomLoader roomLoader;
+	private long startTime;
+
 
 	public ColorCaveStarter()
 	{
@@ -21,41 +27,61 @@ public class ColorCaveStarter extends JPanel implements MouseListener
 		loader = new ConcreteRoomLoader(); //need to extend abstract with concrete class
 		loader.load(); // Load your cave data
 		loader.serialize("");//caveData.ser filename 
+		roomLoader = deserializeRoomLoader("adi.ser");
+		room = roomLoader.getStart();
+		startTime = System.currentTimeMillis();
 
 	}
-	public void paintComponent(Graphics g)
-	{
-	
+
+	 private AbstractRoomLoader deserializeRoomLoader(String fileName) {
+        AbstractRoomLoader deserializedRoomLoader = null;
+        try {
+            FileInputStream file = new FileInputStream(fileName);
+            ObjectInputStream in = new ObjectInputStream(file);
+            deserializedRoomLoader = (AbstractRoomLoader) in.readObject();
+            in.close();
+            file.close();
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return deserializedRoomLoader;
+    }
+
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
-		Graphics2D g2=(Graphics2D)g;
+		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(Color.BLACK);
-
-		g2.fillRect(0,0,frame.getWidth(),frame.getHeight());
-
-		loader.load();
-		Room room = loader.getStart(); // Doors should come from Room object
-		for(Door d : room.getDoors()  )
-		{
-		g2.setColor(enumToColor(d));
-		r = new Rectangle(200,200,100,200);
-		g2.fill(r);
+		g2.fillRect(0, 0, frame.getWidth(), frame.getHeight());
+	
+		if (room != null) { // Check if room is not null
+			int doorY = 200;
+			for (Door door : room.getDoors()) {
+				g2.setColor(enumToColor(door));
+				r = new Rectangle(200, doorY, 100, 200);
+				g2.fill(r);
+				doorY += 220;
+			}
+	
+			g2.setColor(Color.WHITE);
+			g2.setFont(new Font("Arial", Font.BOLD, 44));
+			g2.drawString("COLOR CAVE!", 80, 40);
+			g2.setFont(new Font("Arial", Font.BOLD, 24));
+			g2.drawString(room.getName(), 80, 80);
+			g2.drawString(room.getDescription(), 80, 120);
+	
+			long elapsedTime = System.currentTimeMillis() - startTime;
+			g2.drawString("Time elapsed: " + (elapsedTime / 1000) + " seconds", 80, 160);
+	
+			if (room.equals(roomLoader.getEnd())) {
+				g2.drawString("Congratulations! You reached the end in " + (elapsedTime / 1000) + " seconds.", 80, 200);
+			}
+		} else {
+			g2.setColor(Color.WHITE);
+			g2.setFont(new Font("Arial", Font.BOLD, 24));
+			g2.drawString("Loading...", 80, 80);
 		}
-		
-		
-		////////////// HEADER /////////////////
-		g2.setColor(Color.WHITE);
-		g2.setFont(new Font("Arial", Font.BOLD, 44));
-		g2.drawString("COLOR CAVE!",80, 40);
-		g2.setFont(new Font("Arial", Font.BOLD, 24));
-		g2.drawString(room.getName(),80, 80);					// uncomment when you have a room object
-		g2.drawString(room.getDescription(),80, 120);
-		g2.drawString("Number of Moves: "+Room.getNumMoves(),80, 600);
-
-		/////////// PAINT DOORS ///////////////
-		
-
 	}
+	
 
 	public void mouseClicked(MouseEvent e)
 	{
@@ -66,6 +92,18 @@ public class ColorCaveStarter extends JPanel implements MouseListener
 			System.out.println("Outside the Rectangle");
 		}
 		repaint();
+
+		for (Door door : room.getDoors()) {
+			int doorY = 200;
+			Rectangle doorRect = new Rectangle(200, doorY, 100, 200);
+			if (doorRect.contains(e.getX(), e.getY())) {
+				Room nextRoom = room.enter(door);
+				room = nextRoom;
+				repaint();
+				break; 
+			}
+			doorY += 220; 
+		}
 	}
 
 	// Other mouse listener methods we don't need to use
