@@ -1,4 +1,3 @@
-package Test;
 import java.io.*;
 public abstract class AbstractRoomLoader implements Serializable {
 

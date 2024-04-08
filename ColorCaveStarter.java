@@ -11,7 +11,7 @@ public class ColorCaveStarter extends JPanel implements MouseListener
 	Room room, end;
 	JFrame frame;
 	ConcreteRoomLoader loader; 
-	private AbstractRoomLoader roomLoader;
+	private CaveData roomLoader;
 	private long startTime;
 
 
@@ -27,25 +27,13 @@ public class ColorCaveStarter extends JPanel implements MouseListener
 		loader = new ConcreteRoomLoader(); //need to extend abstract with concrete class
 		loader.load(); // Load your cave data
 		loader.serialize("");//caveData.ser filename 
-		roomLoader = deserializeRoomLoader("adi.ser");
+		roomLoader = loader.deserialize("aarav.ser");
 		room = roomLoader.getStart();
 		startTime = System.currentTimeMillis();
 
 	}
 
-	 private AbstractRoomLoader deserializeRoomLoader(String fileName) {
-        AbstractRoomLoader deserializedRoomLoader = null;
-        try {
-            FileInputStream file = new FileInputStream(fileName);
-            ObjectInputStream in = new ObjectInputStream(file);
-            deserializedRoomLoader = (AbstractRoomLoader) in.readObject();
-            in.close();
-            file.close();
-        } catch (IOException | ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
-        return deserializedRoomLoader;
-    }
+
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
