@@ -1,7 +1,10 @@
+package Test;
 import java.io.*;
 public abstract class AbstractRoomLoader implements Serializable {
 
 	private Room start, end;
+	
+	CaveData cave = new CaveData();
 
 	public abstract void load();
 
@@ -18,14 +21,15 @@ public abstract class AbstractRoomLoader implements Serializable {
 				ObjectOutputStream out = new ObjectOutputStream(file);
 
 				// Method for serialization of object
-				out.writeObject(this);
-				
+				out.writeObject(cave);
+
+
 				out.close();
 				file.close();
 
 				System.out.println("RoomLoader has been serialized to =>"+fileName);
 
-		}
+		}  
 
 		catch(IOException ex)
 		{
@@ -34,8 +38,8 @@ public abstract class AbstractRoomLoader implements Serializable {
 
 	}
 
-public AbstractRoomLoader deserialize(String fileName){
-	AbstractRoomLoader rL = null;
+public CaveData deserialize(String fileName){
+	CaveData rL = null;
 		try
 		{
 				// Reading the object from a file
@@ -43,15 +47,15 @@ public AbstractRoomLoader deserialize(String fileName){
 				ObjectInputStream in = new ObjectInputStream(file);
 
 				// Method for deserialization of object
-				rL = (AbstractRoomLoader)in.readObject();
-
+				rL = (CaveData)in.readObject();
+				
 				in.close();
 				file.close();
-				CaveData cave = (CaveData)(in.readObject());
+
 				System.out.println("Object has been deserialized  from file "+fileName);
 				System.out.println("Start = "+rL.getStart()+", end = "+rL.getEnd());
 		}
-
+ 
 		catch(IOException ex)
 		{
 				System.out.println("IOException is caught => "+ex);
