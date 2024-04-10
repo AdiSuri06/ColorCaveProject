@@ -12,6 +12,7 @@ public class ConcreteRoomLoader extends AbstractRoomLoader{
    Room r6 = new Room("six", "test");
    Room r7= new Room("seven", "test");
    Room r8 = new Room("eight", "test");
+   end = new Room("end", "final room");;
    
    
    start.addDoor(Door.RED,  r1); 
@@ -24,6 +25,7 @@ public class ConcreteRoomLoader extends AbstractRoomLoader{
    r3.addDoor(Door.RED, r7);
    r3.addDoor(Door.BLUE, r8);
    
+   cave.addRoom(start);
    cave.addRoom(r1);
    cave.addRoom(r2);
    cave.addRoom(r3);
@@ -32,18 +34,20 @@ public class ConcreteRoomLoader extends AbstractRoomLoader{
    cave.addRoom(r6);
    cave.addRoom(r7);
    cave.addRoom(r8);
+   cave.addRoom(end);
+
    serialize("aarav.ser");
    
    }
 @Override
 public Room getStart() {
 	// TODO Auto-generated method stub
-	return null;
+	return start;
 }
 @Override
 public Room getEnd() {
 	// TODO Auto-generated method stub
-	return null;
+	return end;
     
 }
    
