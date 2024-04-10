@@ -27,9 +27,9 @@ public class ColorCaveStarter extends JPanel implements MouseListener
 		frame.setVisible(true);
 		loader = new ConcreteRoomLoader(); //need to extend abstract with concrete class
 		loader.load(); // Load your cave data
-		loader.serialize("");//caveData.ser filename 
-		roomLoader = loader.deserialize("aarav.ser");
-		room = roomLoader.getStart();
+		
+		
+		room = loader.getStart();
 		startTime = System.currentTimeMillis();
 
 	}
