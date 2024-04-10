@@ -9,9 +9,10 @@ public class ColorCaveStarter extends JPanel implements MouseListener
 {
 	Rectangle r;
 	Room room, end;
+
 	JFrame frame;
 	ConcreteRoomLoader loader; 
-	private CaveData roomLoader;
+	
 	private long startTime;
 
 
@@ -60,7 +61,7 @@ public class ColorCaveStarter extends JPanel implements MouseListener
 			long elapsedTime = System.currentTimeMillis() - startTime;
 			g2.drawString("Time elapsed: " + (elapsedTime / 1000) + " seconds", 80, 160);
 	
-			if (room.equals(roomLoader.getEnd())) {
+			if (room.equals(loader.getEnd())) {
 				g2.drawString("Congratulations! You reached the end in " + (elapsedTime / 1000) + " seconds.", 80, 200);
 			}
 		} else {
