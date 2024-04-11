@@ -1,5 +1,5 @@
 r1 g2 p3
-p5 r6 b2
+p5 b6 b2
 y3 r8
 b4 g7
 r7
