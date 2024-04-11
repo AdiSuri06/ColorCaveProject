@@ -6,6 +6,12 @@ public class ConcreteRoomLoader extends AbstractRoomLoader {
     public Room start, end;
     HashMap<Character, Door> h = new HashMap<Character, Door>();
 
+    public ConcreteRoomLoader() {
+        cave = deserialize("aarav.ser");
+        start = cave.getStart();
+        end = cave.getEnd();
+    }
+
     public void load() {
 
         h.put('r', Door.RED);
