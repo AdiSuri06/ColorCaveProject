@@ -1,72 +1,67 @@
 import java.io.*;
-public abstract class AbstractRoomLoader implements Serializable {
+import java.util.*;
+public abstract class AbstractRoomLoader {
 
-	private Room start, end;
-	
-	CaveData cave = new CaveData();
+    protected CaveData cave;
 
-	public abstract void load();
+    public abstract void load();
 
-	public abstract Room getStart();
+    public Room getStart(){  return cave.getStart(); }
 
-	public abstract Room getEnd();
+    public Room getEnd(){ return cave.getEnd(); }
 
-	public void serialize(String fileName){
-		// Serialization
-		try
-		{
-				//Saving of object in a file
-				FileOutputStream file = new FileOutputStream(fileName);
-				ObjectOutputStream out = new ObjectOutputStream(file);
+    public void serialize(String fileName){
+        // Serialization
+        try
+        {
+            //Saving of object in a file
+            FileOutputStream file = new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(file);
 
-				// Method for serialization of object
-				out.writeObject(cave);
+            // Method for serialization of object
+            out.writeObject(cave);
 
+            out.close();
+            file.close();
 
-				out.close();
-				file.close();
+            System.out.println("Cave has been serialized to =>"+fileName);
 
-				System.out.println("RoomLoader has been serialized to =>"+fileName);
+        }
 
-		}  
+        catch(IOException ex)
+        {
+            System.out.println("IOException is caught => "+ex);
+        }
 
-		catch(IOException ex)
-		{
-				System.out.println("IOException is caught => "+ex);
-		}
+    }
 
-	}
+    public void deserialize(String fileName){
+        try
+        {
+            // Reading the object from a file
+            FileInputStream file = new FileInputStream(fileName);
+            ObjectInputStream in = new ObjectInputStream(file);
 
-public CaveData deserialize(String fileName){
-	CaveData rL = null;
-		try
-		{
-				// Reading the object from a file
-				FileInputStream file = new FileInputStream(fileName);
-				ObjectInputStream in = new ObjectInputStream(file);
+            // Method for deserialization of object
+            cave = (CaveData)in.readObject();
 
-				// Method for deserialization of object
-				rL = (CaveData)in.readObject();
-				
-				in.close();
-				file.close();
+            in.close();
+            file.close();
 
-				System.out.println("Object has been deserialized  from file "+fileName);
-				System.out.println("Start = "+rL.getStart()+", end = "+rL.getEnd());
-		}
- 
-		catch(IOException ex)
-		{
-				System.out.println("IOException is caught => "+ex);
-		}
+            System.out.println("Object has been deserialized  from file "+fileName);
+            System.out.println("Start = "+getStart()+", end = "+getEnd());
+        }
 
-		catch(ClassNotFoundException ex)
-		{
-				System.out.println("ClassNotFoundException is caught => "+ex);
-		}
+        catch(IOException ex)
+        {
+            System.out.println("IOException is caught => "+ex);
+        }
 
-		return rL;
+        catch(ClassNotFoundException ex)
+        {
+            System.out.println("ClassNotFoundException is caught => "+ex);
+        }
 
-}
+    }
 
 }

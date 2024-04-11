@@ -1,7 +1,7 @@
 public enum Door{
-	RED,
-	GREEN,
-	BLUE,
-	PINK,
-	YELLOW
+    RED,
+    GREEN,
+    BLUE,
+    PINK,
+    YELLOW
 }
