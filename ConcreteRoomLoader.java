@@ -1,42 +1,81 @@
+import java.util.*;
+import java.io.*;
+
 public class ConcreteRoomLoader extends AbstractRoomLoader {
     CaveData cave = new CaveData();
     public Room start, end;
+    HashMap<Character, Door> h = new HashMap<Character, Door>();
 
     public void load() {
-        start = new Room("start", "first");
-        Room r1 = new Room("one", "level one");
-        Room r2 = new Room("two", "level two");
-        Room r3 = new Room("three", "level two");
-        Room r4 = new Room("four", "level three");
-        Room r5 = new Room("five", "level three");
-        Room r6 = new Room("six", "test");
-        Room r7 = new Room("seven", "test");
-        Room r8 = new Room("eight", "test");
-        end = new Room("end", "final room");
-        ;
 
-        start.addDoor(Door.RED, r1);
-        r1.addDoor(Door.BLUE, r2);
-        r1.addDoor(Door.RED, r3);
-        r2.addDoor(Door.GREEN, r1);
-        r2.addDoor(Door.YELLOW, r4);
-        r2.addDoor(Door.BLUE, r5);
-        r5.addDoor(Door.GREEN, r6);
-        r3.addDoor(Door.RED, r7);
-        r3.addDoor(Door.BLUE, r8);
+        h.put('r', Door.RED);
 
-        cave.addRoom(start);
-        cave.addRoom(r1);
-        cave.addRoom(r2);
-        cave.addRoom(r3);
-        cave.addRoom(r4);
-        cave.addRoom(r5);
-        cave.addRoom(r6);
-        cave.addRoom(r7);
-        cave.addRoom(r8);
-        cave.addRoom(end);
+        h.put('g', Door.GREEN);
+
+        h.put('b', Door.BLUE);
+
+        h.put('p', Door.PINK);
+
+        h.put('y', Door.YELLOW);
 
         serialize("aarav.ser");
+        String line = "";
+        try {
+            System.out.print("test");
+            File file = new File("labyrinth2.txt");
+
+            BufferedReader br = new BufferedReader(
+                    new FileReader(file));
+
+            ArrayList<Room> arr = new ArrayList<Room>();
+
+            int i = 0;
+
+            for (int j = 1; j < 32; j++)
+
+            {
+
+                Room room = new Room(j + "", "");
+
+                cave.addRoom(room);
+
+                arr.add(room);
+                if (j == 1)
+                    start = room;
+                if (j == 31)
+                    end = room;
+
+            }
+
+            while ((line = br.readLine()) != null)
+
+            {
+
+                StringTokenizer st = new StringTokenizer(line);
+                Room room = arr.get(i++);
+                while (st.hasMoreTokens())
+
+                {
+                    System.out.print("test");
+
+                    String s = st.nextToken();
+
+                    char[] c = s.toCharArray();
+                    if (c.length == 3)
+                        room.addDoor(h.get(c[0]),
+                                arr.get(Integer.parseInt(Character.toString(c[1]) + Character.toString(c[2]))));
+                    else
+                        room.addDoor(h.get(c[0]), arr.get(Integer.parseInt(Character.toString(c[1]))));
+
+                    Integer integer = Integer.parseInt(Character.toString(c[1]));
+                    System.out.print(integer.toString());
+                }
+
+            }
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
     }
 
