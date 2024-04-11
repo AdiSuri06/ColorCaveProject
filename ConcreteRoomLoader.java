@@ -2,6 +2,13 @@ public class ConcreteRoomLoader extends AbstractRoomLoader {
     CaveData cave = new CaveData();
     public Room start, end;
 
+    public ConcreteRoomLoader() {
+        cave = deserialize("aarav.ser");
+        start = cave.getStart();
+        end = cave.getEnd();
+    }
+
+
     public void load() {
         start = new Room("start", "first");
         Room r1 = new Room("one", "level one");
@@ -13,18 +20,9 @@ public class ConcreteRoomLoader extends AbstractRoomLoader {
         Room r7 = new Room("seven", "test");
         Room r8 = new Room("eight", "test");
         end = new Room("end", "final room");
-        ;
-
-        start.addDoor(Door.RED, r1);
-        r1.addDoor(Door.BLUE, r2);
-        r1.addDoor(Door.RED, r3);
-        r2.addDoor(Door.GREEN, r1);
-        r2.addDoor(Door.YELLOW, r4);
-        r2.addDoor(Door.BLUE, r5);
-        r5.addDoor(Door.GREEN, r6);
-        r3.addDoor(Door.RED, r7);
-        r3.addDoor(Door.BLUE, r8);
-
+    
+        // Add doors to the rooms here
+    
         cave.addRoom(start);
         cave.addRoom(r1);
         cave.addRoom(r2);
@@ -35,11 +33,9 @@ public class ConcreteRoomLoader extends AbstractRoomLoader {
         cave.addRoom(r7);
         cave.addRoom(r8);
         cave.addRoom(end);
-
+    
         serialize("aarav.ser");
-
     }
-
     @Override
     public Room getStart() {
         // TODO Auto-generated method stub

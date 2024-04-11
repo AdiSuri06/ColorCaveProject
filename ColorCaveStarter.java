@@ -7,29 +7,28 @@ import java.io.ObjectInputStream;
 import java.util.*;
 
 public class ColorCaveStarter extends JPanel implements MouseListener {// test
-    Rectangle r;
+	Rectangle r;
     Room room, end;
 
     JFrame frame;
-    ConcreteRoomLoader loader;
 
     private long startTime;
+	ConcreteRoomLoader loader;
 
-    public ColorCaveStarter() {
-        frame = new JFrame("Color Cave");
-        frame.setSize(1000, 1000);
-        frame.add(this);
-        frame.addMouseListener(this);
-        frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        loader = new ConcreteRoomLoader(); // need to extend abstract with concrete class
-        loader.load(); // Load your cave data
-
-        room = loader.getStart();
-        startTime = System.currentTimeMillis();
-
-    }
+	public ColorCaveStarter() {
+		frame = new JFrame("Color Cave");
+		frame.setSize(1000, 1000);
+		frame.add(this);
+		frame.addMouseListener(this);
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		loader = new ConcreteRoomLoader(); // need to extend abstract with concrete class
+		loader.load(); // Load your cave data
+	
+		room = loader.getStart(); // Initialize room with the start room
+		startTime = System.currentTimeMillis();
+	}
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
