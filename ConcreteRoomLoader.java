@@ -24,7 +24,6 @@ public class ConcreteRoomLoader extends AbstractRoomLoader {
 
         h.put('y', Door.YELLOW);
 
-        serialize("aarav.ser");
         String line = "";
         try {
             System.out.print("test");
