@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.FileInputStream;
@@ -7,28 +8,39 @@ import java.io.ObjectInputStream;
 import java.util.*;
 
 public class ColorCaveStarter extends JPanel implements MouseListener {// test
-	Rectangle r;
+    Rectangle r;
     Room room, end;
 
     JFrame frame;
-
+    String path;
+    private Timer timer;
     private long startTime;
-	ConcreteRoomLoader loader;
+    ConcreteRoomLoader loader;
 
-	public ColorCaveStarter() {
-		frame = new JFrame("Color Cave");
-		frame.setSize(1000, 1000);
-		frame.add(this);
-		frame.addMouseListener(this);
-		frame.setResizable(false);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-		loader = new ConcreteRoomLoader(); // need to extend abstract with concrete class
-		loader.load(); // Load your cave data
-	
-		room = loader.getStart(); // Initialize room with the start room
-		startTime = System.currentTimeMillis();
-	}
+    public ColorCaveStarter() {
+        frame = new JFrame("Color Cave");
+        frame.setSize(1500, 1000);
+        frame.add(this);
+        frame.addMouseListener(this);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        loader = new ConcreteRoomLoader(); // need to extend abstract with concrete class
+        loader.load(); // Load your cave data
+        Bot bot = new Bot();
+        bot.load();
+        path = bot.run();
+        room = loader.getStart(); // Initialize room with the start room
+        startTime = 0;
+
+        timer = new Timer(100, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                repaint();
+            }
+        });
+        timer.start();
+    }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -36,13 +48,13 @@ public class ColorCaveStarter extends JPanel implements MouseListener {// test
         g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, frame.getWidth(), frame.getHeight());
 
-        if (room != null) { // Check if room is not null
-            int doorY = 200;
+        if (room != null && room.getDoors().size() > 0) { // Check if room is not null
+            int doorX = 150;
             for (Door door : room.getDoors()) {
                 g2.setColor(enumToColor(door));
-                r = new Rectangle(200, doorY, 100, 200);
+                r = new Rectangle(doorX, 300, 100, 200);
                 g2.fill(r);
-                doorY += 220;
+                doorX += 150;
             }
 
             g2.setColor(Color.WHITE);
@@ -52,11 +64,13 @@ public class ColorCaveStarter extends JPanel implements MouseListener {// test
             g2.drawString(room.getName(), 80, 80);
             g2.drawString(room.getDescription(), 80, 120);
 
-            long elapsedTime = System.currentTimeMillis() - startTime;
-            g2.drawString("Time elapsed: " + (elapsedTime / 1000) + " seconds", 80, 160);
+            g2.drawString("Path: " + path, 80, 220);
+            long elapsedTime = startTime == 0? 0: System.currentTimeMillis() - startTime;
+            g2.drawString("Time elapsed: " + (elapsedTime / 1000.0) + " seconds", 80, 160);
 
             if (room.equals(loader.getEnd())) {
-                g2.drawString("Congratulations! You reached the end in " + (elapsedTime / 1000) + " seconds.", 80, 200);
+                g2.drawString("Congratulations! You reached the end in " + (elapsedTime / 1000.0) + " seconds.", 80, 200);
+                timer.stop();
             }
         } else {
             g2.setColor(Color.WHITE);
@@ -66,24 +80,21 @@ public class ColorCaveStarter extends JPanel implements MouseListener {// test
     }
 
     public void mouseClicked(MouseEvent e) {
-        if (r.contains(e.getX(), e.getY())) {
-            System.out.println("Inside the Rectangle");
-
-        } else {
-            System.out.println("Outside the Rectangle");
-        }
         repaint();
-
+        int doorX = 150;
         for (Door door : room.getDoors()) {
-            int doorY = 200;
-            Rectangle doorRect = new Rectangle(200, doorY, 100, 200);
+            Rectangle doorRect = new Rectangle(doorX, 330, 100, 200);
             if (doorRect.contains(e.getX(), e.getY())) {
+                if(startTime == 0) {
+                    startTime = System.currentTimeMillis();
+                }
                 Room nextRoom = room.enter(door);
                 room = nextRoom;
                 repaint();
+                System.out.println("Inside the Rectangle " + door);
                 break;
             }
-            doorY += 220;
+            doorX += 150;
         }
     }
 

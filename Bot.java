@@ -22,9 +22,8 @@ public class Bot{
         //str = "["+currRoom.getID()+"]";
     }
 
-    public void run(){
-        System.out.println(formatString(shortestPath()));
-
+    public String run(){
+        return formatString(shortestPath());
     }
 
     public static ArrayList<Door> shortestPath() {
@@ -130,7 +129,7 @@ public class Bot{
     public static void main(String[]args){
         Bot bot = new Bot();
         bot.load();
-        bot.run();
+        System.out.println(bot.run());
     }
 
 
